@@ -2,12 +2,21 @@ const express = require('express');
 const app = express();
 const morgan  = require('morgan');
 const bodyparser = require('body-parser');
+const mongoose = require('mongoose');
+
+//Mongo db connection
+mongoose.connect('mongodb://root:12345@cluster0-shard-00-00-ecaim.mongodb.net:27017,cluster0-shard-00-01-ecaim.mongodb.net:27017,cluster0-shard-00-02-ecaim.mongodb.net:27017/Laravel-vue-song?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true',
+);
+
 
 // parse application/x-www-form-urlencoded
 app.use(bodyparser.urlencoded({ extended: false }));
  
 // parse application/json
 app.use(bodyparser.json());
+
+
+
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

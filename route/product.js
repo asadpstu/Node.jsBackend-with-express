@@ -10,8 +10,17 @@ router.get('/',(req,res,next)=>{
 });
 
 router.post('/',(req,res,next)=>{
+
+    const newproduct = {
+        songname : req.body.song,
+        singer_id : req.body.singer_id,
+        song_type : req.body.song_type,
+        song_duration : req.body.duration
+    };
+
     res.status(200).json({
-      message : "Product / Post request"
+      message : "Product / Post request",
+      NewProduct : newproduct
     });
 });
 

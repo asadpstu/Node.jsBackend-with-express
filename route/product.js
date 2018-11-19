@@ -12,10 +12,25 @@ const mongoose = require('mongoose');
 // http://localhost:3000/product/  Get Method {all product}
 router.get('/',(req,res,next)=>{
     song.find()
+    .select('songname song_type song_duration')
     .exec()
     .then(doc =>{
-       console.log(doc);
-       res.status(200).json({doc});
+        const response = {
+          total : doc.length,
+          data  : doc.map(doc =>{
+              return{
+                  name : doc.songname,
+                  type : doc.song_type,
+                  duration : doc.song_duration,
+                  other : {
+                      type : 'GET',
+                      url  : 'http://localhost:3000/product/'+doc.id
+                  }
+              }
+          })
+        };
+       console.log(response);
+       res.status(200).json({response});
     })
     .catch(err =>{
         console.log(err);
@@ -46,14 +61,16 @@ Data Format for client  request method body
     });
     newsong.save().then(result =>{
         console.log(result);
+        res.status(200).json({
+            message : "New Song Inserted / Post request",
+            NewSongInformation : newsong
+          });
     }).catch(err =>{
         console.log(err);
+        res.status(505).json({ Error: err });
     });
 
-    res.status(200).json({
-      message : "New Song Inserted / Post request",
-      NewSongInformation : newsong
-    });
+
 });
 
 // http://localhost:3000/product/{id}   Get Method

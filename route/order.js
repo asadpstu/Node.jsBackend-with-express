@@ -83,19 +83,76 @@ neworder.save().then(result =>{
 
 // http://localhost:3000/order/{id}   Get Method
 router.get('/:orderid',(req,res,next)=>{
+    const id = req.params.orderid;
+    order.findById(id)
+    .populate('song_id')
+    .exec()
+    .then(doc =>{
+       console.log(doc);
+       if(doc)
+       {
+        res.status(200).json({doc});
+       }
+       else{
+        res.status(404).json({reponse : 'Record Found Null' });  
+       }
+       
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({err:err});
+    });
 
 });
 
 
 // http://localhost:3000/order/{id}   Patch Method
 router.patch('/:orderid',function(req, res) {
+//data format to accept
+/*
+Data Format for client 
+{
+    "song_id": ,
+    "Quantity": 2,
+    "Country": "Bangladesh",
+    "Ordername": "Order from Bangladesh",
+    "Datetime": "2018-11-20 23:59:59"
+}
+*/
+ 
+const id = req.params.orderid;
+//const props = req.body;
+const props = {
+    song_id : req.body.song_id,
+    Quantity : req.body.Quantity,
+    Country : req.body.Country,
+    Ordername : req.body.Ordername,
+    Datetime : req.body.Datetime
+ };
 
+order.update({_id: id}, props, function(err, raw) {
+   if (err) {
+     res.send(err);
+   }
+   res.send(raw);
+ });
 });
+
 
 // Delete api:
 // http://http://localhost:3000/order/{id}   Delete Method
 router.delete('/:orderid',(req,res,next)=>{
-
+    const id = req.params.orderid;
+    order.remove({_id : id})
+    .exec()
+    .then(doc =>{
+       console.log(doc);
+       res.status(200).json({reponse : 'Document Deleted'});
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({err:err});
+    });
 });
 
 

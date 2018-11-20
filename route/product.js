@@ -19,6 +19,7 @@ router.get('/',(req,res,next)=>{
           total : doc.length,
           data  : doc.map(doc =>{
               return{
+                  //id : doc.id,  
                   name : doc.songname,
                   type : doc.song_type,
                   duration : doc.song_duration,

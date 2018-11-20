@@ -34,9 +34,11 @@ app.use(function(req, res, next) {
   });
 
 const ProductRoute = require('./route/product');
+const OrderRoute = require('./route/order');
 
 app.use(morgan('dev'));
 app.use('/product',ProductRoute);
+app.use('/order',OrderRoute);
 
 //Test first Default route
 // app.use((req,res,next) =>{
